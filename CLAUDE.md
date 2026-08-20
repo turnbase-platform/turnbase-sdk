@@ -40,9 +40,16 @@ needs to know how it is encoded, the design has gone wrong.
 
 ```bash
 ./mvnw spotless:apply
-./mvnw verify        # includes Checkstyle
+./mvnw verify        # includes Checkstyle, Error Prone and NullAway
 npm run build && npm run typecheck
 ```
+
+**`@NullMarked` here is part of the published contract** ([ADR-0015](../docs/decisions/0015-static-analysis-error-prone-nullaway.md)).
+A third-party developer's IDE reads these annotations, so a nullable return that is not marked is a
+documentation defect as much as a safety one — and changing a signature's nullability after release
+is a breaking change like any other.
+
+`git config core.hooksPath .githooks` once, to get the `pre-push` fast-fail.
 
 `buf breaking` does not guard this repo — nothing here is generated from the proto. **The guard on a
 breaking change is you.** Semantic versioning is real here in a way it is not elsewhere: a game

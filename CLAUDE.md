@@ -1,0 +1,54 @@
+# turnbase-sdk — CLAUDE.md
+
+The public Game Development Kit. **The only repository in this project that third parties compile
+against.** Publishes `io.turnbase:turnbase-sdk` (Maven) and an npm package.
+
+**This file is additive** — corpus, registry and conventions live in the parent repository:
+
+| | |
+|---|---|
+| Registry | `../docs/implementation/registry.md` — `IMP-M0-02`, `IMP-M3-01`, `IMP-M3-11` |
+| Conventions | `../docs/implementation/conventions.md` — **normative** |
+| Design | `../docs/specs/gdk-api/` — `backend-gdk-api.md`, `frontend-gdk-api.md`, `test-harness.md` |
+
+## What makes this repo different from the other four
+
+**It is a public contract.** Everything else here can be refactored freely; this cannot. Three
+consequences that do not apply anywhere else:
+
+1. **This artifact must have no dependency on `turnbase-common` or `turnbase-game-host`** — not even
+   transitively. `IMP-M3-10` explicitly fails if the first official game needs one, because that
+   would mean the contract is not self-sufficient. Adding such a dependency here is how that happens.
+2. **Java 21 is the maximum, not the target.** Game code runs in Espresso as a Java 21 guest. A
+   Java 22+ API compiles here and fails at run time inside a sandbox, which is the worst place to
+   find out.
+3. **Javadoc on every public type is enforced by Checkstyle**, not by review. This is the one
+   repository that runs Checkstyle (`conventions.md` §2) — the Javadoc *is* the documentation a
+   third-party developer gets.
+
+Package root `io.turnbase.gdk`, with the sub-packages fixed by `backend-gdk-api.md` §2 —
+`.context`, `.effect`, `.result`, `.model`. That layout is part of the published surface; renaming a
+package is a breaking change.
+
+## What must not leak in
+
+`backend-gdk-api.md` §2: interfaces, records, enums and builders **only** — no `main`, no I/O, no
+serialization logic (FR-GDK-015). Serialization is the host's side of the boundary. If a type here
+needs to know how it is encoded, the design has gone wrong.
+
+## Before you commit
+
+```bash
+./mvnw spotless:apply
+./mvnw verify        # includes Checkstyle
+npm run build && npm run typecheck
+```
+
+`buf breaking` does not guard this repo — nothing here is generated from the proto. **The guard on a
+breaking change is you.** Semantic versioning is real here in a way it is not elsewhere: a game
+compiled against 1.2.0 must keep working.
+
+## If a specification is wrong
+
+**Stop, and fix the document in the parent repository first.** A defect published in this artifact
+reaches people outside the project and cannot be quietly corrected.

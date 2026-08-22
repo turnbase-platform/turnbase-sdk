@@ -19,6 +19,8 @@ consequences that do not apply anywhere else:
 1. **This artifact must have no dependency on `turnbase-common` or `turnbase-game-host`** — not even
    transitively. `IMP-M3-10` explicitly fails if the first official game needs one, because that
    would mean the contract is not self-sufficient. Adding such a dependency here is how that happens.
+   The enforcer's `bannedDependencies` rule (`IMP-M0-02`) fails `validate` if either appears, at any
+   scope, so this doesn't rely on anyone remembering to check it by hand.
 2. **Java 21 is the maximum, not the target.** Game code runs in Espresso as a Java 21 guest. A
    Java 22+ API compiles here and fails at run time inside a sandbox, which is the worst place to
    find out.
@@ -28,7 +30,17 @@ consequences that do not apply anywhere else:
 
 Package root `io.turnbase.gdk`, with the sub-packages fixed by `backend-gdk-api.md` §2 —
 `.context`, `.effect`, `.result`, `.model`. That layout is part of the published surface; renaming a
-package is a breaking change.
+package is a breaking change. All five exist from `IMP-M0-02` even though four start empty, for
+exactly that reason.
+
+TypeScript source lives under `src/main/ts/` (tests under `src/test/ts/`), matching Maven's
+`src/main/<lang>` shape rather than a conventional npm `src/`; `npm run build` etc. run from the
+repository root.
+
+**`IMP-M0-02` deliberately ships no `TurnBaseGame`, no context/result/effect types, and no
+`TurnBaseClient`.** It is the build-and-publish floor only. The Java type surface is `IMP-M3-01`;
+the frontend client is `IMP-M3-12`. If you're picking up either of those and something looks
+missing, it isn't — that's the item you're on.
 
 ## What must not leak in
 

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+#
+# Local fast-fail. Enable once per clone:
+#
+#   git config core.hooksPath .githooks
+#
+# CI is the gate (conventions.md §4); this runs what CI runs first and cheapest, so a
+# formatting, Javadoc or lint break is caught before it costs a pipeline round trip. Bypass
+# with --no-verify on a WIP branch.
+#
+set -euo pipefail
+
+cd "$(git rev-parse --show-toplevel)"
+
+fail=0
+
+echo "pre-push: spotless + checkstyle"
+./mvnw -q spotless:check checkstyle:check || { echo "  fix with: ./mvnw spotless:apply" >&2; fail=1; }
+
+echo "pre-push: compile + unit tests"
+./mvnw -q test || fail=1
+
+echo "pre-push: eslint + tsc"
+npm run --silent lint || fail=1
+npm run --silent typecheck || fail=1
+
+exit $fail

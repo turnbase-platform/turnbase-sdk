@@ -1,0 +1,71 @@
+# Build and test checks for turnbase-sdk.
+#
+# IMP-M0-02 owns this file's two jobs. IMP-M0-11 owns the rest of the pipeline for all five
+# repositories — publish to Maven Central + npm, Trivy scan, release on tag — and extends
+# this file rather than replacing it.
+#
+# master everywhere, never main (conventions.md §4). There is no buf job here: nothing in
+# this repository is generated from the proto (turnbase-sdk/CLAUDE.md) — the guard on a
+# breaking change in this artifact is a person, not a tool.
+name: build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up GraalVM CE 21
+        # NOT actions/setup-java: it has no graalvm-community distribution and fails with
+        # "No supported distribution was found for input graalvm-community" (IMP-M0-01).
+        # GraalVM CE is set up by GraalVM's own action, and the toolchain is pinned to
+        # 21.0.2-graalce in .sdkmanrc, so CI and a developer's shell run the same JDK.
+        uses: graalvm/setup-graalvm@v1
+        with:
+          distribution: graalvm-community
+          java-version: '21'
+          cache: maven
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify
+        # Spotless and Checkstyle run at validate, Error Prone and NullAway during compile,
+        # JaCoCo's merged check at verify — so this one command is the whole Java gate.
+        run: ./mvnw --batch-mode --no-transfer-progress verify
+
+      - name: Coverage report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: jacoco
+          path: target/site/jacoco/
+          if-no-files-found: warn
+
+  js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npm test
+      - run: npm pack --dry-run

@@ -1,0 +1,64 @@
+# Supply-chain updates, per conventions.md §6 and platform-operations.md FR-CICD-010.
+#
+# Trivy scanning is wired by IMP-M0-11 with the rest of the shared pipeline; this file is
+# the half that is pure configuration and therefore cheaper to land now than to remember
+# later.
+version: 2
+updates:
+  - package-ecosystem: maven
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      build-tooling:
+        patterns:
+          - com.diffplug.spotless:*
+          - com.google.errorprone:*
+          - com.uber.nullaway:*
+          - org.jacoco:*
+          - org.apache.maven.plugins:*
+          - com.puppycrawl.tools:*
+      test:
+        patterns:
+          - org.junit*
+          - org.assertj:*
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    ignore:
+      # typescript-eslint@8.67.0's peer range is ">=4.8.4 <6.1.0" (IMP-M0-02) — TypeScript
+      # 6.1+ (and the TS 7 native-compiler line) fails npm install with ERESOLVE. 6.0.3 is
+      # a deliberate pin, not a stale one; moving past 6.1 needs a typescript-eslint bump
+      # in the same change, which Dependabot cannot coordinate across two packages.
+      - dependency-name: typescript
+        versions: ['>=6.1.0']
+    groups:
+      lint-format:
+        patterns:
+          - eslint*
+          - '@typescript-eslint/*'
+          - typescript-eslint
+          - prettier
+      build-test:
+        patterns:
+          - tsup
+          - vitest
+          - '@vitest/*'
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: chore
+      include: scope

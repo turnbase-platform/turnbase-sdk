@@ -1,0 +1,12 @@
+target/
+.mvn/wrapper/maven-wrapper.jar
+*.class
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+node_modules/
+dist/
+*.tgz
+coverage/

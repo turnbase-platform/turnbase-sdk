@@ -1,8 +1,7 @@
 # Build and test checks for turnbase-sdk.
 #
-# IMP-M0-02 owns this file's two jobs. IMP-M0-11 owns the rest of the pipeline for all five
-# repositories — publish to Maven Central + npm, Trivy scan, release on tag — and extends
-# this file rather than replacing it.
+# IMP-M0-02 owns this file's two jobs. IMP-M0-11 adds the `scan` job below and `publish.yml`
+# alongside this file — Trivy scan, publish to Maven Central + npm on tag.
 #
 # master everywhere, never main (conventions.md §4). There is no buf job here: nothing in
 # this repository is generated from the proto (turnbase-sdk/CLAUDE.md) — the guard on a
@@ -69,3 +68,28 @@ jobs:
       - run: npm run build
       - run: npm test
       - run: npm pack --dry-run
+
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Trivy scan — dependencies (report)
+        # platform-operations.md FR-CICD-010. A single fs scan covers both pom.xml and
+        # package-lock.json; only a critical finding blocks the build (the next step).
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln
+          severity: 'LOW,MEDIUM,HIGH,CRITICAL'
+          exit-code: '0'
+
+      - name: Trivy scan — dependencies (gate)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln
+          severity: CRITICAL
+          exit-code: '1'

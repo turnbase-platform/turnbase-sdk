@@ -1,0 +1,59 @@
+# Release publish for turnbase-sdk — IMP-M0-11.
+#
+# Triggers ONLY on a v*.*.* tag pushed to master, never on an ordinary push. Cutting the tag
+# is a human action (CLAUDE.md, ADR-0012 — the tag is the release trigger).
+#
+# Maven only. ADR-0012's Release Strategy names Maven Central + npm for this artifact, but
+# both are deferred (IMP-GATE-25): no document names an open-source license, which Maven
+# Central's publish validation requires, and GitHub Packages' npm registry cannot host
+# @turnbase/gdk (FR-FEGDK-007) under the turnbase-platform org scope it would require. The
+# Maven artifact has a working interim home — GitHub Packages — so only that half publishes
+# here; there is deliberately no npm job.
+name: publish
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish-maven:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up GraalVM CE 21
+        uses: graalvm/setup-graalvm@v1
+        with:
+          distribution: graalvm-community
+          java-version: '21'
+          cache: maven
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set release version from the tag
+        run: ./mvnw --batch-mode versions:set -DnewVersion="${GITHUB_REF_NAME#v}" -DgenerateBackupPoms=false
+
+      - name: Verify
+        run: ./mvnw --batch-mode --no-transfer-progress verify
+
+      - name: Configure GitHub Packages credentials
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml <<XML
+          <settings>
+            <servers>
+              <server>
+                <id>github</id>
+                <username>${{ github.actor }}</username>
+                <password>${{ secrets.GITHUB_TOKEN }}</password>
+              </server>
+            </servers>
+          </settings>
+          XML
+
+      - name: Publish to GitHub Packages
+        run: ./mvnw --batch-mode --no-transfer-progress -Prelease deploy -DskipTests

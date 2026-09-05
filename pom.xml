@@ -19,6 +19,21 @@
     the TypeScript client, published for third-party game developers to compile against.</description>
 
   <!--
+    GitHub Packages, not Maven Central. ADR-0012's Release Strategy names Maven Central for
+    this artifact, but no document names an open-source license for it, and Maven Central's
+    publish validation rejects a POM with no `<licenses>` (IMP-GATE-25). Deferred until a
+    license is chosen; `publish.yml` (IMP-M0-11) publishes here in the interim, the same
+    registry turnbase-common uses. It triggers only on a v*.*.* tag, never an ordinary push.
+  -->
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>TurnBase turnbase-sdk GitHub Packages</name>
+      <url>https://maven.pkg.github.com/turnbase-platform/turnbase-sdk</url>
+    </repository>
+  </distributionManagement>
+
+  <!--
     Every version below is exact. conventions.md §6 requires reproducible builds, and a range
     or an inherited property is how the same commit compiles differently on Tuesday.
 

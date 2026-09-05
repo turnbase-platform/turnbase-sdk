@@ -1,8 +1,5 @@
 /**
  * `@turnbase/gdk` — the public frontend Game Development Kit.
- *
- * IMP-M0-02 ships the declared types only (`frontend-gdk-api.md` §5, §6, §9, §10).
- * `TurnBaseClient` — the class a game frontend actually instantiates — is IMP-M3-12.
  */
 export type {
   Role,
@@ -13,3 +10,5 @@ export type {
   InboundMessage,
   OutboundMessage,
 } from "./types.js";
+export { TurnBaseClient } from "./client.js";
+export type { TurnBaseClientOptions } from "./client.js";

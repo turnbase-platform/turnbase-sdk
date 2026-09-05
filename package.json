@@ -36,13 +36,13 @@
     "format:check": "prettier --check \"src/**/*.ts\"",
     "test": "vitest run --coverage"
   },
-  "dependencies": {},
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@types/node": "26.3.0",
     "@vitest/coverage-v8": "4.1.11",
     "eslint": "10.9.1",
     "eslint-config-prettier": "10.1.8",
+    "jsdom": "29.1.1",
     "prettier": "3.9.6",
     "tsup": "8.5.1",
     "typescript": "6.0.3",

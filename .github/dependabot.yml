@@ -50,6 +50,11 @@ updates:
       # in the same change, which Dependabot cannot coordinate across two packages.
       - dependency-name: typescript
         versions: ['>=6.1.0']
+      # jsdom 30.x's own `engines` field requires Node ^22.22.2 || ^24.15.0 || >=26.0.0, past
+      # what .nvmrc pins (22.20.0) — the same trap turnbase-frontend hit on IMP-M0-05; npm
+      # only warns (EBADENGINE) rather than failing, so the wrong version installs silently.
+      - dependency-name: jsdom
+        versions: ['>=30.0.0']
     groups:
       lint-format:
         patterns:
@@ -62,6 +67,7 @@ updates:
           - tsup
           - vitest
           - '@vitest/*'
+          - jsdom
 
   - package-ecosystem: github-actions
     directory: /

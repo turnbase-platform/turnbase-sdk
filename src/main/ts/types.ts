@@ -1,8 +1,5 @@
 /**
  * Declared types for the frontend GDK, per {@code frontend-gdk-api.md} §5, §6, §9 and §10.
- *
- * IMP-M0-02 ships these declarations only. `TurnBaseClient` itself — the class that reads
- * these types off the wire and exposes them through callbacks — is IMP-M3-12.
  */
 
 /** A client's role for the session (`frontend-gdk-api.md` §5). */

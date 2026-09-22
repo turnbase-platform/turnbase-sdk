@@ -1,7 +1,7 @@
 /**
- * The sealed {@code Effect} model and the {@code Effects} factory (Game BE → Platform), fixed by
- * {@code backend-gdk-api.md} §2. Empty until {@code IMP-M3-01} lands {@code Effect} and its
- * variants.
+ * The sealed {@link io.turnbase.gdk.effect.Effect} model and the {@link
+ * io.turnbase.gdk.effect.Effects} factory (Game BE → Platform), fixed by {@code backend-gdk-api.md}
+ * §2.
  */
 @NullMarked
 package io.turnbase.gdk.effect;

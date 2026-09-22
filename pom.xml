@@ -69,11 +69,9 @@
 
     <!--
       Coverage floor. platform-operations.md FR-CICD-003 sets 70% across unit and integration
-      together. IMP-M0-02 ships only GameState and the package-info files — no branching
-      logic — so this passes vacuously today, the same known-and-deliberate shape
-      turnbase-common's pom records. It stops being vacuous the moment IMP-M3-01 lands
-      Effects, the result builders and GameParameters. Do not "fix" the vacuous pass by
-      lowering the threshold.
+      together. IMP-M3-01 lands the Effects factory, the result builders and GameOutcome's
+      builder — the branching logic this floor now actually measures, rather than the vacuous
+      pass IMP-M0-02 recorded here.
     -->
     <jacoco.line.coverage>0.70</jacoco.line.coverage>
   </properties>

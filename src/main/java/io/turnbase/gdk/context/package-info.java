@@ -1,7 +1,8 @@
 /**
- * Typed input contexts (Platform → Game BE), fixed by {@code backend-gdk-api.md} §2. Empty until
- * {@code IMP-M3-01} lands {@code InitContext}, {@code ActionContext}, {@code PlayerJoinedContext},
- * {@code PlayerLeftContext} and {@code ResyncContext}.
+ * Typed input contexts (Platform → Game BE), fixed by {@code backend-gdk-api.md} §2: {@link
+ * io.turnbase.gdk.context.InitContext}, {@link io.turnbase.gdk.context.ActionContext}, {@link
+ * io.turnbase.gdk.context.PlayerJoinedContext}, {@link io.turnbase.gdk.context.PlayerLeftContext}
+ * and {@link io.turnbase.gdk.context.ResyncContext}.
  */
 @NullMarked
 package io.turnbase.gdk.context;

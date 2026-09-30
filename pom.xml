@@ -15,16 +15,19 @@
   <packaging>pom</packaging>
 
   <name>turnbase-sdk-parent</name>
-  <description>Reactor aggregator, never itself consumed. This repository builds two Maven
+  <description>Reactor aggregator, never itself consumed. This repository builds three Maven
     artifacts that share one version (game-host-internals.md §3.6, conventions.md §5): the
     public GDK API (io.turnbase:turnbase-sdk, module gdk-api) that game developers compile
     against, and the shared serialization engine (io.turnbase:turnbase-serialization, module
     serialization) reused by the Game Host's guest bridge, the local test harness and the
-    upload validator. One root `./mvnw install` builds and installs both.</description>
+    upload validator, and the shared bundle validator (io.turnbase:turnbase-bundle-validator, module
+    bundle-validator) reused by the platform upload pipeline and the local test harness. One root
+    `./mvnw install` builds and installs all three.</description>
 
   <modules>
     <module>gdk-api</module>
     <module>serialization</module>
+    <module>bundle-validator</module>
   </modules>
 
   <!--

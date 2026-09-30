@@ -134,6 +134,23 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <!--
+        The FE GDK (@turnbase/gdk), built by `npm run build` at the repository root, is served by the
+        harness so a game frontend need not bundle it (test-harness.md §3). Absent when the npm build
+        has not run: the harness then warns at launch instead of failing.
+      -->
+      <resource>
+        <targetPath>io/turnbase/harness/gdk</targetPath>
+        <directory>${project.basedir}/../dist</directory>
+        <includes>
+          <include>index.js</include>
+        </includes>
+      </resource>
+    </resources>
     <plugins>
       <!--
         Same toolchain/dependency gate as turnbase-sdk (gdk-api/pom.xml): this component is

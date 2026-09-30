@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>TurnBase harness — {{PLAYER}}</title>
+    <link rel="stylesheet" href="/shell.css">
+  </head>
+  <body>
+    <script type="application/json" id="cfg">{{CONFIG}}</script>
+    <main>
+      <section id="stage">
+        <header>
+          <strong>TurnBase harness</strong>
+          <span id="viewer"></span>
+          <span id="status">connecting…</span>
+        </header>
+        <iframe id="game" src="{{GAME_ORIGIN}}/" sandbox="allow-scripts allow-same-origin"></iframe>
+      </section>
+      <aside>
+        <section>
+          <h2>Viewers</h2>
+          <ul id="viewers"></ul>
+          <p class="hint">Each link is another tab, connected as that player.</p>
+        </section>
+        <section>
+          <h2>Parameters</h2>
+          <pre id="parameters"></pre>
+        </section>
+        <section id="debug">
+          <h2>Debug</h2>
+          <label>As <select id="as"></select></label>
+          <textarea id="payload" rows="3" placeholder='action payload, e.g. {"card":"7H"}'></textarea>
+          <div class="row">
+            <button data-cmd="action">Send action</button>
+            <button data-cmd="join">player_joined</button>
+            <button data-cmd="resync">Resync</button>
+          </div>
+          <div class="row">
+            <select id="reason">
+              <option value="left">left</option>
+              <option value="kicked">kicked</option>
+              <option value="grace_expired">grace_expired</option>
+            </select>
+            <button data-cmd="leave">player_left</button>
+          </div>
+          <p id="debug-result" class="hint"></p>
+        </section>
+        <section>
+          <h2>Game log</h2>
+          <ol id="log"></ol>
+        </section>
+      </aside>
+    </main>
+    <script src="/shell.js"></script>
+  </body>
+</html>

@@ -65,12 +65,17 @@ public final class GameLoader {
 
   /** Manifest defaults, overridden by {@code harness.json}. */
   static GameParameters parameters(JsonNode declared, Map<String, JsonNode> overrides) {
+    return new MapParameters(parameterValues(declared, overrides));
+  }
+
+  /** The effective parameter values, for the game and for the shell's panel. */
+  static Map<String, JsonNode> parameterValues(JsonNode declared, Map<String, JsonNode> overrides) {
     Map<String, JsonNode> values = new LinkedHashMap<>();
     for (JsonNode p : declared) {
       values.put(p.path("key").asText(), p.path("default"));
     }
     values.putAll(overrides);
-    return new MapParameters(values);
+    return values;
   }
 
   private record MapParameters(Map<String, JsonNode> values) implements GameParameters {

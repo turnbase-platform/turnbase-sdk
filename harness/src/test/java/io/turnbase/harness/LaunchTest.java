@@ -56,7 +56,8 @@ class LaunchTest {
   void shellIsAnotherOriginAndFramesTheGameOrigin() throws Exception {
     Path project = Projects.project(tmp, Projects.GOOD_STATE);
     try (HarnessServer server = HarnessLauncher.launch(project, 0, out)) {
-      String shell = get(server, "localhost", "/");
+      assertThat(get(server, "localhost", "/")).startsWith("HTTP/1.1 302").contains("/?player=");
+      String shell = get(server, "localhost", "/?player=Player+1.1");
       assertThat(shell).contains("src=\"http://game.localhost:" + server.port() + "/\"");
       assertThat(shell).doesNotContain("__TURNBASE__");
       assertThat(get(server, "localhost", "/frontend/main.js")).startsWith("HTTP/1.1 404");
@@ -104,5 +105,20 @@ class LaunchTest {
     assertThatThrownBy(() -> HarnessLauncher.launch(project, 0, out))
         .isInstanceOf(HarnessLauncher.LaunchRefusedException.class)
         .hasMessageContaining("did not start");
+  }
+
+  @Test
+  void theFeGdkIsInjectedByImportMapWhenBundled() throws Exception {
+    Path project = Projects.project(tmp, Projects.GOOD_STATE);
+    try (HarnessServer server = HarnessLauncher.launch(project, 0, out)) {
+      String doc = get(server, "game.localhost", "/");
+      assertThat(doc).contains("\"@turnbase/gdk\": \"/__turnbase/gdk.js\"");
+      assertThat(doc.indexOf("importmap")).isLessThan(doc.indexOf("window.__TURNBASE__"));
+      String gdk = get(server, "game.localhost", "/__turnbase/gdk.js");
+      // Present after `npm run build`; a Maven-only checkout warns at launch instead.
+      assertThat(gdk).startsWith(HarnessServer.gdkAvailable() ? "HTTP/1.1 200" : "HTTP/1.1 404");
+      assertThat(captured.toString(StandardCharsets.UTF_8).contains("FE GDK is not bundled"))
+          .isEqualTo(!HarnessServer.gdkAvailable());
+    }
   }
 }

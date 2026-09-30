@@ -31,8 +31,60 @@ final class Projects {
 
   /** A game whose state is {@code stateSource} (a top-level class named CounterState). */
   static Path project(Path dir, String stateSource) throws IOException {
-    String game =
-        """
+    return project(dir, stateSource, COUNTER_GAME, MANIFEST);
+  }
+
+  /** A game that emits every effect kind, and a manifest allowing a spectator and late joins. */
+  static Path effectsProject(Path dir) throws IOException {
+    return project(
+        dir,
+        GOOD_STATE,
+        EFFECTS_GAME,
+        MANIFEST
+            .replace("\"spectators\":false", "\"spectators\":true")
+            .replace("\"midGameJoin\":false", "\"midGameJoin\":true"));
+  }
+
+  static final String EFFECTS_GAME =
+      """
+      package com.example;
+      import io.turnbase.gdk.*;
+      import io.turnbase.gdk.context.*;
+      import io.turnbase.gdk.effect.*;
+      import io.turnbase.gdk.model.*;
+      import io.turnbase.gdk.result.*;
+      import java.util.*;
+      public final class CounterGame implements TurnBaseGame<CounterState> {
+        private Team first;
+        public CounterGame() {}
+        public InitResult<CounterState> onInit(InitContext ctx) {
+          first = ctx.teams().get(0);
+          return new InitResult<>(CounterState.initial(), List.of(Effects.log("**started**")));
+        }
+        public ActionResult<CounterState> onAction(CounterState s, ActionContext ctx) {
+          CounterState n = s.next();
+          Player p = ctx.player();
+          return new ActionResult<>(n, List.of(
+              Effects.broadcast(Map.of("count", n.count())),
+              Effects.sendToPlayer(p.id(), Map.of("private", p.displayName())),
+              Effects.sendToTeam(p.teamId(), Map.of("team", true)),
+              Effects.sendToPlayer(UUID.randomUUID(), Map.of("stray", true)),
+              Effects.log("`" + p.displayName() + "` acted")));
+        }
+        public PlayerJoinedResult<CounterState> onPlayerJoined(CounterState s, PlayerJoinedContext c) {
+          return new PlayerJoinedResult<>(s, List.of(Effects.broadcast(Map.of("welcome", c.player().displayName()))));
+        }
+        public PlayerLeftResult<CounterState> onPlayerLeft(CounterState s, PlayerLeftContext c) {
+          return new PlayerLeftResult<>(s, List.of(Effects.broadcast(Map.of("bye", c.reason().name()))));
+        }
+        public ViewResult onResync(CounterState s, ResyncContext c) {
+          return ViewResult.of(Map.of("count", s.count()));
+        }
+      }
+      """;
+
+  static final String COUNTER_GAME =
+      """
         package com.example;
         import io.turnbase.gdk.*;
         import io.turnbase.gdk.context.*;
@@ -51,6 +103,9 @@ final class Projects {
           public ViewResult onResync(CounterState s, ResyncContext c) { return ViewResult.empty(); }
         }
         """;
+
+  private static Path project(Path dir, String stateSource, String game, String manifest)
+      throws IOException {
     Path work = Files.createDirectories(dir.resolve("work"));
     Files.writeString(work.resolve("CounterGame.java"), game);
     Files.writeString(work.resolve("CounterState.java"), stateSource);
@@ -73,7 +128,7 @@ final class Projects {
       throw new IllegalStateException(err.toString(java.nio.charset.StandardCharsets.UTF_8));
     }
     Path project = Files.createDirectories(dir.resolve("project"));
-    Files.writeString(project.resolve("manifest.json"), MANIFEST);
+    Files.writeString(project.resolve("manifest.json"), manifest);
     Files.createDirectories(project.resolve("backend"));
     Files.write(project.resolve("backend/game.jar"), jar(out));
     Files.createDirectories(project.resolve("frontend"));

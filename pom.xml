@@ -28,6 +28,7 @@
     <module>gdk-api</module>
     <module>serialization</module>
     <module>bundle-validator</module>
+    <module>harness</module>
   </modules>
 
   <!--

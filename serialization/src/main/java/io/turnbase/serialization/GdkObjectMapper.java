@@ -1,6 +1,7 @@
 package io.turnbase.serialization;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
@@ -37,6 +38,10 @@ public final class GdkObjectMapper {
     // versions is the game's concern, not a reason for the shared engine to reject a field it
     // does not recognize.
     mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+    // A payload is typed by the game's record, not guessed from its text: {"cell":"4"} must not
+    // bind to an int (RR-09). The reference game is what third parties copy.
+    mapper.disable(MapperFeature.ALLOW_COERCION_OF_SCALARS);
 
     return mapper;
   }

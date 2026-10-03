@@ -44,6 +44,14 @@ class GdkObjectMapperTest {
   }
 
   @Test
+  void rejectsAFractionWhereAnIntegerIsExpected() {
+    var mapper = GdkObjectMapper.create();
+
+    assertThatThrownBy(() -> mapper.readValue("{\"cell\":1.5}", Cell.class))
+        .isInstanceOf(JsonMappingException.class);
+  }
+
+  @Test
   void stillBindsAnIntegerAndNull() throws Exception {
     var mapper = GdkObjectMapper.create();
 

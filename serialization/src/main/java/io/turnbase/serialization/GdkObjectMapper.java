@@ -42,6 +42,8 @@ public final class GdkObjectMapper {
     // A payload is typed by the game's record, not guessed from its text: {"cell":"4"} must not
     // bind to an int (RR-09). The reference game is what third parties copy.
     mapper.disable(MapperFeature.ALLOW_COERCION_OF_SCALARS);
+    // Nor may 1.5 truncate to 1.
+    mapper.disable(DeserializationFeature.ACCEPT_FLOAT_AS_INT);
 
     return mapper;
   }

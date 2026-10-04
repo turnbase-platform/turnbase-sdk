@@ -113,7 +113,9 @@ export class TurnBaseClient<TAction = unknown, TEvent = unknown> {
   }
 
   private post(message: OutboundMessage<TAction>): void {
-    if (!this.parentOrigin) {
+    // A detached frame (Return to lobby, a remount) has no parent: `window.parent` is then the
+    // game's own window, and posting there only makes the browser warn about the origin mismatch.
+    if (!this.parentOrigin || window.parent === window) {
       return;
     }
     // Never '*' (§8): every outbound post is addressed to the trusted parent origin only.

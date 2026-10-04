@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { TurnBaseClient } from "../../main/ts/client.js";
 import type { InboundMessage, Player, Team } from "../../main/ts/types.js";
 
@@ -13,8 +13,24 @@ function dispatchFromParent(message: InboundMessage, origin = PARENT_ORIGIN): vo
   );
 }
 
+const realParent = Object.getOwnPropertyDescriptor(window, "parent");
+
+/** jsdom is a top-level window (`window.parent === window`); a framed game has a distinct parent. */
+function frameUnderParent(): void {
+  Object.defineProperty(window, "parent", {
+    configurable: true,
+    value: { postMessage: () => undefined },
+  });
+}
+
 beforeEach(() => {
   delete window.__TURNBASE__;
+  frameUnderParent();
+});
+
+afterEach(() => {
+  if (realParent) Object.defineProperty(window, "parent", realParent);
+  vi.restoreAllMocks();
 });
 
 describe("TurnBaseClient bootstrap and lifecycle (frontend-gdk-api.md §4, §9)", () => {
@@ -41,6 +57,18 @@ describe("TurnBaseClient bootstrap and lifecycle (frontend-gdk-api.md §4, §9)"
     client.start();
 
     expect(postMessage).toHaveBeenCalledWith({ type: "ready" }, PARENT_ORIGIN);
+    client.dispose();
+  });
+
+  it("does not post when the frame has no parent (window.parent === window)", () => {
+    if (realParent) Object.defineProperty(window, "parent", realParent);
+    window.__TURNBASE__ = { parentOrigin: PARENT_ORIGIN, sessionId: "s1" };
+    const postMessage = vi.spyOn(window, "postMessage");
+    const client = new TurnBaseClient();
+
+    client.start();
+
+    expect(postMessage).not.toHaveBeenCalled();
     client.dispose();
   });
 

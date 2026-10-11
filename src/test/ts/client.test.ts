@@ -72,6 +72,17 @@ describe("TurnBaseClient bootstrap and lifecycle (frontend-gdk-api.md §4, §9)"
     client.dispose();
   });
 
+  it("does not post, or throw, when the detached frame reports a null parent", () => {
+    Object.defineProperty(window, "parent", { configurable: true, value: null });
+    window.__TURNBASE__ = { parentOrigin: PARENT_ORIGIN, sessionId: "s1" };
+    const client = new TurnBaseClient();
+
+    expect(() => {
+      client.start();
+    }).not.toThrow();
+    client.dispose();
+  });
+
   it("never posts with targetOrigin '*'", () => {
     window.__TURNBASE__ = { parentOrigin: PARENT_ORIGIN, sessionId: "s1" };
     const postMessage = vi.spyOn(window.parent, "postMessage");

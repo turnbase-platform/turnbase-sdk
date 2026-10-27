@@ -224,7 +224,7 @@ public final class LocalGame {
     return s;
   }
 
-  private List<Effect> accept(GameState next, List<Effect> effects, String handler) {
+  private List<Effect> accept(GameState next, List<? extends Effect> effects, String handler) {
     roundTrip(next, handler);
     state = next;
     return new ArrayList<>(effects);

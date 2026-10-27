@@ -45,7 +45,7 @@ public final class Effects {
    * @param text the log entry text, supporting basic Markdown (FR-LOG-002)
    * @return a {@link LogEffect} (FR-EFF-004)
    */
-  public static Effect log(String text) {
+  public static LogEffect log(String text) {
     return new LogEffect(text);
   }
 

@@ -147,6 +147,45 @@ class ManifestValidatorTest {
   }
 
   @Test
+  void acceptsWellFormedCreditsAndTheirAbsence() throws Exception {
+    JsonNode manifest = parse(VALID_MANIFEST);
+    ((com.fasterxml.jackson.databind.node.ObjectNode) manifest)
+        .set(
+            "credits",
+            parse(
+                """
+                { "designers": ["Antoine Bauza", "Bruno Cathala"], "artists": ["Miguel Coimbra"],
+                  "publisher": "Repos Production", "year": 2015 }
+                """));
+
+    ManifestValidationResult result = validator.validate(manifest);
+
+    assertThat(result.valid()).isTrue();
+    assertThat(result.warnings()).isEmpty();
+  }
+
+  @Test
+  void rejectsMalformedCredits() throws Exception {
+    for (String credits :
+        List.of(
+            "{ \"artists\": [\"A\"] }",
+            "{ \"designers\": [] }",
+            "{ \"designers\": [\"A\"], \"year\": \"2015\" }",
+            "{ \"designers\": [\"A\"], \"publisher\": \"\" }",
+            "\"Bauza\"")) {
+      JsonNode manifest = parse(VALID_MANIFEST);
+      ((com.fasterxml.jackson.databind.node.ObjectNode) manifest).set("credits", parse(credits));
+
+      ManifestValidationResult result = validator.validate(manifest);
+
+      assertThat(result.valid()).as(credits).isFalse();
+      assertThat(result.errors())
+          .extracting(Finding::code)
+          .anyMatch(c -> c.startsWith("manifest.credits"));
+    }
+  }
+
+  @Test
   void warnsOnUnrecognizedKeyWithoutFailingValidation() throws Exception {
     JsonNode manifest = parse(VALID_MANIFEST);
     ((com.fasterxml.jackson.databind.node.ObjectNode) manifest).put("capabilites", true);

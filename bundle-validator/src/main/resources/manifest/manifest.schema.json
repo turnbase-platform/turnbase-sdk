@@ -83,6 +83,38 @@
       "type": "string",
       "minLength": 1
     },
+    "credits": {
+      "description": "Optional credits of the original work a game implements (game-catalog.md FR-GAME-002; manifest-schema.md `credits`). Absent for an original game.",
+      "type": "object",
+      "required": ["designers"],
+      "properties": {
+        "designers": {
+          "description": "Designers of the original work, 1–10 names.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10,
+          "items": { "type": "string", "minLength": 1, "maxLength": 60 }
+        },
+        "artists": {
+          "description": "Artists of the original work, up to 10 names.",
+          "type": "array",
+          "maxItems": 10,
+          "items": { "type": "string", "minLength": 1, "maxLength": 60 }
+        },
+        "publisher": {
+          "description": "Publisher of the original work.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "year": {
+          "description": "Year the original work was first published.",
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 2999
+        }
+      }
+    },
     "tags": {
       "description": "1–10 free-form tags, each 1–24 characters (FR-MANIFEST-006, game-catalog.md FR-GAME-003).",
       "type": "array",

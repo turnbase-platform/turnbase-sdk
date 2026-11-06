@@ -43,6 +43,7 @@ public final class ManifestValidator {
           "backend",
           "frontend",
           "infoDoc",
+          "credits",
           "tags",
           "capabilities",
           "teamTemplates",
@@ -51,6 +52,8 @@ public final class ManifestValidator {
   private static final Set<String> FRONTEND_KEYS = Set.of("entryPoint");
   private static final Set<String> CAPABILITIES_KEYS = Set.of("ai", "spectators", "midGameJoin");
   private static final Set<String> TEAM_TEMPLATE_KEYS = Set.of("name", "size", "count");
+  private static final Set<String> CREDITS_KEYS =
+      Set.of("designers", "artists", "publisher", "year");
   private static final Set<String> RANGE_KEYS = Set.of("min", "max");
   private static final Set<String> PARAMETER_COMMON_KEYS =
       Set.of("key", "displayName", "type", "default");
@@ -233,6 +236,7 @@ public final class ManifestValidator {
     warnUnknownKeys(manifest.path("frontend"), "manifest.frontend", FRONTEND_KEYS, warnings);
     warnUnknownKeys(
         manifest.path("capabilities"), "manifest.capabilities", CAPABILITIES_KEYS, warnings);
+    warnUnknownKeys(manifest.path("credits"), "manifest.credits", CREDITS_KEYS, warnings);
 
     JsonNode teamTemplates = manifest.path("teamTemplates");
     if (teamTemplates.isArray()) {

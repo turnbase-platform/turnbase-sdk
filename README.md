@@ -1,5 +1,7 @@
 # turnbase-sdk
 
+> Part of [TurnBase](https://github.com/turnbase-platform/turnbase), a platform for turn-based multiplayer games — this is the public Game Development Kit. Start at the [umbrella README](https://github.com/turnbase-platform/turnbase#readme).
+
 The public Game Development Kit — `TurnBaseGame`, effect/input types, and the TypeScript
 `TurnBaseClient` — published for third-party developers to build TurnBase games against.
 
@@ -92,3 +94,11 @@ What this repository distributes is audited for its dependencies' licences (allo
 ```
 
 The npm half: `npm run licenses` (checker pinned in the script; `licenses.csv`, git-ignored).
+
+## Layout
+
+See [`ARCHITECTURE.md`](ARCHITECTURE.md).
+
+## Licence
+
+Apache-2.0, see [`LICENSE`](LICENSE).

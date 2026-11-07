@@ -80,3 +80,15 @@ still change shape between iterations.
 
 **Stop, and fix the document in the parent repository first.** A defect published in this
 artifact reaches people outside the project and cannot be quietly corrected.
+
+## Third-party licences
+
+What this repository distributes is audited for its dependencies' licences (allowed families:
+`docs/implementation/conventions.md` §6 *Third-party licences*). The report is generated, not committed:
+
+```bash
+./mvnw org.codehaus.mojo:license-maven-plugin:2.8.0:aggregate-add-third-party -Dlicense.excludedScopes=test,provided
+# -> target/generated-sources/license/THIRD-PARTY.txt
+```
+
+The npm half: `npm run licenses` (checker pinned in the script; `licenses.csv`, git-ignored).

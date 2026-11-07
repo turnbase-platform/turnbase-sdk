@@ -10,3 +10,4 @@ node_modules/
 dist/
 *.tgz
 coverage/
+licenses.csv

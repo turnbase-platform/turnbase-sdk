@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.github.turnbase-platform</groupId>
+  <artifactId>turnbase-sdk-parent</artifactId>
+  <!--
+    Pre-release (backend-gdk-api.md, top matter): NFR-COMPAT-001's backward-compatibility
+    guarantee does not apply until v1.0.0, so 0.x may break between iterations. Releases are
+    tag-triggered and CI sets the version from the tag (ADR-0012, Release Strategy); this
+    SNAPSHOT is the development version, not a dependency SNAPSHOT — that is what
+    conventions.md §5 forbids, and it is a rule about consumers, not about this pom.
+  -->
+  <version>0.1.0</version>
+  <packaging>pom</packaging>
+
+  <name>turnbase-sdk-parent</name>
+  <description>Reactor aggregator, never itself consumed. This repository builds three Maven
+    artifacts that share one version (game-host-internals.md §3.6, conventions.md §5): the
+    public GDK API (io.github.turnbase-platform:turnbase-sdk, module gdk-api) that game developers compile
+    against, and the shared serialization engine (io.github.turnbase-platform:turnbase-serialization, module
+    serialization) reused by the Game Host's guest bridge, the local test harness and the
+    upload validator, and the shared bundle validator (io.github.turnbase-platform:turnbase-bundle-validator, module
+    bundle-validator) reused by the platform upload pipeline and the local test harness. One root
+    `./mvnw install` builds and installs all three.</description>
+
+  <modules>
+    <module>gdk-api</module>
+    <module>serialization</module>
+    <module>bundle-validator</module>
+    <module>harness</module>
+  </modules>
+
+  <!--
+    GitHub Packages, not Maven Central. ADR-0012's Release Strategy names Maven Central for
+    this repository's artifacts, but no document names an open-source license, and Maven
+    Central's publish validation rejects a POM with no `<licenses>` (IMP-GATE-25). Deferred
+    until a license is chosen; `publish.yml` (IMP-M0-11) publishes here in the interim, the
+    same registry turnbase-common uses. It triggers only on a v*.*.* tag, never an ordinary
+    push. Inherited by both modules so one GitHub Packages endpoint hosts both artifacts.
+  -->
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>TurnBase turnbase-sdk GitHub Packages</name>
+      <url>https://maven.pkg.github.com/turnbase-platform/turnbase-sdk</url>
+    </repository>
+  </distributionManagement>
+</project>

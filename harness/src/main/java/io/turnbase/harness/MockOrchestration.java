@@ -86,7 +86,7 @@ public final class MockOrchestration {
   private boolean failed;
 
   /**
-   * @param game the in-process game, already initialised or about to be via {@link #start()}
+   * @param game the in-process game, already initialised or about to be via {@link #start(List)}
    * @param sessionId the session id the shell's bootstrap carries
    * @param spectators whether the manifest declares {@code capabilities.spectators}: one spectator
    *     named {@value #SPECTATOR} is then included

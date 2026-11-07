@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.turnbase</groupId>
+    <groupId>io.github.turnbase-platform</groupId>
     <artifactId>turnbase-sdk-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
@@ -113,7 +113,7 @@
     </dependency>
     <!-- BindingCapabilities: the table bundle-format.md §4.4's analysis reads (§3.6). -->
     <dependency>
-      <groupId>io.turnbase</groupId>
+      <groupId>io.github.turnbase-platform</groupId>
       <artifactId>turnbase-serialization</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -163,8 +163,8 @@
                 </requireReleaseDeps>
                 <bannedDependencies>
                   <excludes>
-                    <exclude>io.turnbase:turnbase-grpc</exclude>
-                    <exclude>io.turnbase:turnbase-game-host</exclude>
+                    <exclude>io.github.turnbase-platform:turnbase-grpc</exclude>
+                    <exclude>io.github.turnbase-platform:turnbase-game-host</exclude>
                   </excludes>
                   <searchTransitive>true</searchTransitive>
                 </bannedDependencies>

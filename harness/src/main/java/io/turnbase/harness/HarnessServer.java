@@ -328,7 +328,7 @@ public final class HarnessServer implements AutoCloseable {
             <meta charset="utf-8">
             <base href="/">
             <script type="importmap">
-              { "imports": { "@turnbase/gdk": "%s" } }
+              { "imports": { "@turnbase-platform/gdk": "%s" } }
             </script>
             <script>
               window.__TURNBASE__ = { parentOrigin: %s, sessionId: %s };

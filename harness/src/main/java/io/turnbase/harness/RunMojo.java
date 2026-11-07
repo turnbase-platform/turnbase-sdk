@@ -10,10 +10,10 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /**
- * {@code mvn io.turnbase:turnbase-harness:run} — validates the game project in the current
- * directory, starts it in-process and serves the two-origin harness until interrupted ({@code
- * test-harness.md} §6). Needs no project model, so it works from any directory containing a {@code
- * manifest.json}, and needs no Docker, Redis or database.
+ * {@code mvn io.github.turnbase-platform:turnbase-harness:run} — validates the game project in the
+ * current directory, starts it in-process and serves the two-origin harness until interrupted
+ * ({@code test-harness.md} §6). Needs no project model, so it works from any directory containing a
+ * {@code manifest.json}, and needs no Docker, Redis or database.
  */
 @Mojo(name = "run", requiresProject = false, requiresDependencyResolution = ResolutionScope.NONE)
 public class RunMojo extends AbstractMojo {

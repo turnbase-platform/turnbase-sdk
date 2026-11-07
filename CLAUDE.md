@@ -1,7 +1,7 @@
 # turnbase-sdk — CLAUDE.md
 
 The public Game Development Kit. **The only repository in this project that third parties compile
-against.** Publishes `io.turnbase:turnbase-sdk` (Maven) and an npm package.
+against.** Publishes `io.github.turnbase-platform:turnbase-sdk` (Maven) and an npm package.
 
 **This file is additive** — corpus, registry and conventions live in the parent repository:
 

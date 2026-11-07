@@ -94,7 +94,7 @@ public final class HarnessLauncher {
     orchestration.start(initEffects);
     if (!HarnessServer.gdkAvailable()) {
       out.println(
-          "WARNING the FE GDK is not bundled with this harness build, so '@turnbase/gdk' cannot be"
+          "WARNING the FE GDK is not bundled with this harness build, so '@turnbase-platform/gdk' cannot be"
               + " injected; a game frontend must bundle it itself.");
     }
     Set<Path> withheld = new HashSet<>();

@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.turnbase</groupId>
+  <groupId>io.github.turnbase-platform</groupId>
   <artifactId>turnbase-sdk-parent</artifactId>
   <!--
     Pre-release (backend-gdk-api.md, top matter): NFR-COMPAT-001's backward-compatibility
@@ -17,10 +17,10 @@
   <name>turnbase-sdk-parent</name>
   <description>Reactor aggregator, never itself consumed. This repository builds three Maven
     artifacts that share one version (game-host-internals.md §3.6, conventions.md §5): the
-    public GDK API (io.turnbase:turnbase-sdk, module gdk-api) that game developers compile
-    against, and the shared serialization engine (io.turnbase:turnbase-serialization, module
+    public GDK API (io.github.turnbase-platform:turnbase-sdk, module gdk-api) that game developers compile
+    against, and the shared serialization engine (io.github.turnbase-platform:turnbase-serialization, module
     serialization) reused by the Game Host's guest bridge, the local test harness and the
-    upload validator, and the shared bundle validator (io.turnbase:turnbase-bundle-validator, module
+    upload validator, and the shared bundle validator (io.github.turnbase-platform:turnbase-bundle-validator, module
     bundle-validator) reused by the platform upload pipeline and the local test harness. One root
     `./mvnw install` builds and installs all three.</description>
 

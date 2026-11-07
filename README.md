@@ -51,7 +51,7 @@ point a formatting one does.
 
 ## The dependency this artifact must never carry
 
-`turnbase-sdk` must have no dependency on `io.turnbase:turnbase-grpc` or
+`turnbase-sdk` must have no dependency on `io.github.turnbase-platform:turnbase-grpc` or
 `turnbase-game-host` — not even transitively. `IMP-M3-10` (the first official game) fails if
 the GDK contract needs one, because that would mean the contract was never self-sufficient.
 The enforcer's `bannedDependencies` rule fails the build if either appears, at any scope,
@@ -67,9 +67,9 @@ something else to make the number look real.
 
 ## Consuming this artifact
 
-Maven consumers declare `io.turnbase:turnbase-sdk` at `provided` scope (Maven) or
+Maven consumers declare `io.github.turnbase-platform:turnbase-sdk` at `provided` scope (Maven) or
 `compileOnly` (Gradle) — never bundled in the game JAR (FR-GDK-014). npm consumers declare
-`@turnbase/gdk` as a normal dependency; it ships zero runtime dependencies of its own
+`@turnbase-platform/gdk` as a normal dependency; it ships zero runtime dependencies of its own
 (FR-FEGDK-008).
 
 **Pre-1.0, breaking changes are expected.** NFR-COMPAT-001's backward-compatibility guarantee

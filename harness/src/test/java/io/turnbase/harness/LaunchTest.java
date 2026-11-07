@@ -112,7 +112,7 @@ class LaunchTest {
     Path project = Projects.project(tmp, Projects.GOOD_STATE);
     try (HarnessServer server = HarnessLauncher.launch(project, 0, out)) {
       String doc = get(server, "game.localhost", "/");
-      assertThat(doc).contains("\"@turnbase/gdk\": \"/__turnbase/gdk.js\"");
+      assertThat(doc).contains("\"@turnbase-platform/gdk\": \"/__turnbase/gdk.js\"");
       assertThat(doc.indexOf("importmap")).isLessThan(doc.indexOf("window.__TURNBASE__"));
       String gdk = get(server, "game.localhost", "/__turnbase/gdk.js");
       // Present after `npm run build`; a Maven-only checkout warns at launch instead.

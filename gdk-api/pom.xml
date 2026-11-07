@@ -9,7 +9,7 @@
     (as publish.yml already does) updates both in one step.
   -->
   <parent>
-    <groupId>io.turnbase</groupId>
+    <groupId>io.github.turnbase-platform</groupId>
     <artifactId>turnbase-sdk-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
@@ -146,8 +146,8 @@
                 -->
                 <bannedDependencies>
                   <excludes>
-                    <exclude>io.turnbase:turnbase-grpc</exclude>
-                    <exclude>io.turnbase:turnbase-game-host</exclude>
+                    <exclude>io.github.turnbase-platform:turnbase-grpc</exclude>
+                    <exclude>io.github.turnbase-platform:turnbase-game-host</exclude>
                   </excludes>
                   <searchTransitive>true</searchTransitive>
                 </bannedDependencies>

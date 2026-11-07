@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.turnbase</groupId>
+    <groupId>io.github.turnbase-platform</groupId>
     <artifactId>turnbase-sdk-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
@@ -17,7 +17,7 @@
     platform ObjectMapper configuration, the serialize/deserialize round-trip routine and the
     NFR-SIZE-001/002 limit checks, plus a Jackson-free capability descriptor. Reused, byte for
     byte, by the Game Host's guest bridge, the local test harness and the upload validator, so
-    the three cannot drift. A separate artifact from io.turnbase:turnbase-sdk (the GDK API a
+    the three cannot drift. A separate artifact from io.github.turnbase-platform:turnbase-sdk (the GDK API a
     developer compiles against with `provided` scope) because Jackson and this engine are not
     part of that published contract (NFR-COMPAT-001).</description>
 
@@ -145,8 +145,8 @@
                 </requireReleaseDeps>
                 <bannedDependencies>
                   <excludes>
-                    <exclude>io.turnbase:turnbase-grpc</exclude>
-                    <exclude>io.turnbase:turnbase-game-host</exclude>
+                    <exclude>io.github.turnbase-platform:turnbase-grpc</exclude>
+                    <exclude>io.github.turnbase-platform:turnbase-game-host</exclude>
                   </excludes>
                   <searchTransitive>true</searchTransitive>
                 </bannedDependencies>

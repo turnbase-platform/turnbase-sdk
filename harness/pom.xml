@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.turnbase</groupId>
+    <groupId>io.github.turnbase-platform</groupId>
     <artifactId>turnbase-sdk-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
@@ -92,17 +92,17 @@
       <artifactId>jackson-databind</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.turnbase</groupId>
+      <groupId>io.github.turnbase-platform</groupId>
       <artifactId>turnbase-sdk</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>io.turnbase</groupId>
+      <groupId>io.github.turnbase-platform</groupId>
       <artifactId>turnbase-serialization</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>io.turnbase</groupId>
+      <groupId>io.github.turnbase-platform</groupId>
       <artifactId>turnbase-bundle-validator</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -139,7 +139,7 @@
         <directory>src/main/resources</directory>
       </resource>
       <!--
-        The FE GDK (@turnbase/gdk), built by `npm run build` at the repository root, is served by the
+        The FE GDK (@turnbase-platform/gdk), built by `npm run build` at the repository root, is served by the
         harness so a game frontend need not bundle it (test-harness.md §3). Absent when the npm build
         has not run: the harness then warns at launch instead of failing.
       -->
@@ -182,8 +182,8 @@
                 </requireReleaseDeps>
                 <bannedDependencies>
                   <excludes>
-                    <exclude>io.turnbase:turnbase-grpc</exclude>
-                    <exclude>io.turnbase:turnbase-game-host</exclude>
+                    <exclude>io.github.turnbase-platform:turnbase-grpc</exclude>
+                    <exclude>io.github.turnbase-platform:turnbase-game-host</exclude>
                   </excludes>
                   <searchTransitive>true</searchTransitive>
                 </bannedDependencies>

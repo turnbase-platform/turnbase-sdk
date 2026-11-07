@@ -12,7 +12,7 @@ and one npm package; none depends on `turnbase-common` or `turnbase-game-host`. 
 | `serialization/` | `GdkSerialization` and `GdkObjectMapper`: the JSON rules shared by host and harness |
 | `bundle-validator/` | `BundleValidator`: manifest and backend-JAR checks, used by the platform at upload and by the harness before launch |
 | `harness/` | Local test harness: `HarnessMain`, `HarnessServer`, `MockOrchestration`, `PreLaunchCheck` |
-| `src/main/ts/` | npm `@turnbase/gdk`: `TurnBaseClient` and wire types |
+| `src/main/ts/` | npm `@turnbase-platform/gdk`: `TurnBaseClient` and wire types |
 
 ## Flows
 

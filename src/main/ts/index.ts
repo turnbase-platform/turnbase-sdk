@@ -1,5 +1,5 @@
 /**
- * `@turnbase/gdk` — the public frontend Game Development Kit.
+ * `@turnbase-platform/gdk` — the public frontend Game Development Kit.
  */
 export type {
   Role,

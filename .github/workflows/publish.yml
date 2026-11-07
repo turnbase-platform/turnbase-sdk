@@ -6,7 +6,7 @@
 # Maven only. ADR-0012's Release Strategy names Maven Central + npm for this artifact, but
 # both are deferred (IMP-GATE-25): no document names an open-source license, which Maven
 # Central's publish validation requires, and GitHub Packages' npm registry cannot host
-# @turnbase/gdk (FR-FEGDK-007) under the turnbase-platform org scope it would require. The
+# @turnbase-platform/gdk (FR-FEGDK-007) under the turnbase-platform org scope it would require. The
 # Maven artifact has a working interim home — GitHub Packages — so only that half publishes
 # here; there is deliberately no npm job.
 name: publish

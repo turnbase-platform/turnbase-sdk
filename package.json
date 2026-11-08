@@ -41,7 +41,7 @@
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@types/node": "26.3.0",
-    "@vitest/coverage-v8": "4.1.11",
+    "@vitest/coverage-v8": "4.1.12",
     "eslint": "10.9.1",
     "eslint-config-prettier": "10.1.8",
     "jsdom": "29.1.1",
@@ -49,6 +49,9 @@
     "tsup": "8.5.1",
     "typescript": "6.0.3",
     "typescript-eslint": "8.68.0",
-    "vitest": "4.1.11"
+    "vitest": "4.1.12"
+  },
+  "overrides": {
+    "minimatch": "11.0.1"
   }
 }
